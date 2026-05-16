@@ -1,0 +1,441 @@
+{
+    "info": {
+        "_postman_id": "534162fa-75cd-4451-938b-e619e34ca734",
+        "name": "virtual-event-management-platform",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "11373214"
+    },
+    "item": [
+        {
+            "name": "Authentication",
+            "item": [
+                {
+                    "name": "Register",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Aswin\",\n  \"email\": \"aswin@test.com\",\n  \"password\": \"123456\",\n  \"role\": \"organizer\"\n}\n\n// {\n//   \"name\": \"Johny\",\n//   \"email\": \"johny@test.com\",\n//   \"password\": \"123456\",\n//   \"role\": \"attendee\"\n// }",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/auth/register",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "auth",
+                                "register"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Login",
+                    "event": [
+                        {
+                            "listen": "test",
+                            "script": {
+                                "exec": [
+                                    "const response = pm.response.json();\r",
+                                    "\r",
+                                    "if (pm.response.code === 200 && response.token) {\r",
+                                    "  pm.collectionVariables.set('token', response.token);\r",
+                                    "\r",
+                                    "  console.log('Token saved successfully');\r",
+                                    "} else {\r",
+                                    "  pm.collectionVariables.unset('token');\r",
+                                    "\r",
+                                    "  console.log('Token removed');\r",
+                                    "}"
+                                ],
+                                "type": "text/javascript",
+                                "packages": {},
+                                "requests": {}
+                            }
+                        }
+                    ],
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n  \"email\": \"aswin@test.com\",\r\n  \"password\": \"123456\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/auth/login",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "auth",
+                                "login"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Event",
+            "item": [
+                {
+                    "name": "Create event",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n  \"title\": \"React Summit 2\",\r\n  \"description\": \"Advanced React Conference\",\r\n  \"date\": \"2026-06-11\",\r\n  \"time\": \"10:00 AM\",\r\n  \"location\": \"Online\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get all event",
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n  \"title\": \"React Summit 2\",\r\n  \"description\": \"Advanced React Conference\",\r\n  \"date\": \"2026-06-11\",\r\n  \"time\": \"10:00 AM\",\r\n  \"location\": \"Online\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Filter events",
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text",
+                                "disabled": true
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n  \"title\": \"React Summit 2\",\r\n  \"description\": \"Advanced React Conference\",\r\n  \"date\": \"2026-06-11\",\r\n  \"time\": \"10:00 AM\",\r\n  \"location\": \"Online\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update event",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\r\n  \"title\": \"React Summit\",\r\n  \"description\": \"Advanced React Conference\",\r\n  \"date\": \"2026-06-10\",\r\n  \"time\": \"10:00 AM\",\r\n  \"location\": \"Online\"\r\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events/6a084555e80bdc813b01f7a5",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events",
+                                "6a084555e80bdc813b01f7a5"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update event Copy",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events/6a084711e80bdc813b01f7a6",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events",
+                                "6a084711e80bdc813b01f7a6"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "event register",
+            "item": [
+                {
+                    "name": "register for event",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events/6a084555e80bdc813b01f7a5/register",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events",
+                                "6a084555e80bdc813b01f7a5",
+                                "register"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Cancel registration",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/events/6a08454ae80bdc813b01f7a4/register",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "events",
+                                "6a08454ae80bdc813b01f7a4",
+                                "register"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "My events",
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    },
+                    "request": {
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer {{token}}",
+                                "type": "text"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": ""
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}api/users/me/events",
+                            "host": [
+                                "{{baseUrl}}api"
+                            ],
+                            "path": [
+                                "users",
+                                "me",
+                                "events"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Test protected route",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n  \"email\": \"aswin@test.com\",\r\n  \"password\": \"123456\"\r\n}"
+                },
+                "url": {
+                    "raw": "{{baseUrl}}api/test/protected",
+                    "host": [
+                        "{{baseUrl}}api"
+                    ],
+                    "path": [
+                        "test",
+                        "protected"
+                    ]
+                }
+            },
+            "response": []
+        }
+    ],
+    "event": [
+        {
+            "listen": "prerequest",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                    ""
+                ]
+            }
+        },
+        {
+            "listen": "test",
+            "script": {
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {},
+                "exec": [
+                    ""
+                ]
+            }
+        }
+    ],
+    "variable": [
+        {
+            "key": "baseUrl",
+            "value": ""
+        },
+        {
+            "key": "token",
+            "value": ""
+        },
+        {
+            "key": "baseUrl",
+            "value": "",
+            "disabled": true
+        }
+    ]
+}
