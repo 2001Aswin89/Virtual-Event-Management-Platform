@@ -34,14 +34,16 @@ export const registerUser = asyncHandler(async (req, res) => {
         role,
     });
 
-    try {
-        await sendEmail({
-            to: newUser.email,
 
-            subject:
-                'Welcome to Virtual Event Platform',
+    if (process.env.NODE_ENV !== 'test') {
+        try {
+            await sendEmail({
+                to: newUser.email,
 
-            text: `Hello ${newUser.name},
+                subject:
+                    'Welcome to Virtual Event Platform',
+
+                text: `Hello ${newUser.name},
 
 Welcome to the Virtual Event Management Platform.
 
@@ -50,12 +52,13 @@ Your account has been successfully created.
 Role: ${newUser.role}
 
 Thank you for registering.`,
-        });
-    } catch (error) {
-        console.error(
-            'Email sending failed:',
-            error.message
-        );
+            });
+        } catch (error) {
+            console.error(
+                'Email sending failed:',
+                error.message
+            );
+        }
     }
 
     res.status(201).json({
