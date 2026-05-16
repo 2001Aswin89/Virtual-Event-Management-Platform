@@ -40,13 +40,91 @@ export const createEvent = asyncHandler(
 
 export const getAllEvents = asyncHandler(
     async (req, res) => {
-        const events = await Event.find()
-            .populate('organizer', 'name email role')
-            .sort({ createdAt: -1 });
+        const {
+            search,
+            location,
+            upcoming,
+            sort,
+            page = 1,
+            limit = 10,
+        } = req.query;
+
+        const query = {};
+
+        // Search by title
+        if (search) {
+            query.title = {
+                $regex: search,
+                $options: 'i',
+            };
+        }
+
+        // Filter by location
+        if (location) {
+            query.location = {
+                $regex: location,
+                $options: 'i',
+            };
+        }
+
+        // Upcoming events only
+        if (upcoming === 'true') {
+            query.date = {
+                $gte: new Date(),
+            };
+        }
+
+        if (upcoming === 'false') {
+            query.date = {
+                $lt: new Date(),
+            };
+        }
+
+        // Pagination
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+
+        const skip =
+            (pageNumber - 1) * limitNumber;
+
+        // Sorting
+        let sortOption = {};
+
+        if (sort === 'date') {
+            sortOption.date = 1;
+        } else if (sort === 'created') {
+            sortOption.createdAt = -1;
+        } else {
+            sortOption.createdAt = -1;
+        }
+
+        const totalEvents = await Event.countDocuments(
+            query
+        );
+
+        const events = await Event.find(query)
+            .populate(
+                'organizer',
+                'name email role'
+            )
+            .sort(sortOption)
+            .skip(skip)
+            .limit(limitNumber);
 
         res.status(200).json({
             success: true,
+
+            pagination: {
+                total: totalEvents,
+                page: pageNumber,
+                pages: Math.ceil(
+                    totalEvents / limitNumber
+                ),
+                limit: limitNumber,
+            },
+
             count: events.length,
+
             events,
         });
     }
