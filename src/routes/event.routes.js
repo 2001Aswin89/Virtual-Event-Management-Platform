@@ -6,6 +6,8 @@ import {
     getAllEvents,
     getSingleEvent,
     updateEvent,
+    registerForEvent,
+    cancelEventRegistration,
 } from '../controllers/event.controller.js';
 
 import protect from '../middleware/auth.middleware.js';
@@ -20,6 +22,20 @@ const router = express.Router();
 router.get('/', getAllEvents);
 
 router.get('/:id', getSingleEvent);
+
+router.post(
+    '/:id/register',
+    protect,
+    authorizeRoles('attendee'),
+    registerForEvent
+);
+
+router.delete(
+    '/:id/register',
+    protect,
+    authorizeRoles('attendee'),
+    cancelEventRegistration
+);
 
 router.post(
     '/',

@@ -6,6 +6,7 @@ import express from 'express';
 import authRoutes from './routes/auth.routes.js';
 import testRoutes from './routes/test.routes.js';
 import eventRoutes from './routes/event.routes.js';
+import userRoutes from './routes/user.routes.js';
 
 import errorHandler from './middleware/error.middleware.js';
 import notFound from './middleware/notFound.middleware.js';
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/api/test', testRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/users', userRoutes);
 
 app.use(notFound);
 

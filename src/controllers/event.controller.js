@@ -138,3 +138,83 @@ export const deleteEvent = asyncHandler(
         });
     }
 );
+
+export const registerForEvent = asyncHandler(
+    async (req, res) => {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404);
+
+            throw new Error('Event not found');
+        }
+
+        const alreadyRegistered = event.attendees.includes(
+            req.user._id
+        );
+
+        if (alreadyRegistered) {
+            res.status(409);
+
+            throw new Error(
+                'User already registered for this event'
+            );
+        }
+
+        if (
+            event.organizer.toString() ===
+            req.user._id.toString()
+        ) {
+            res.status(400);
+
+            throw new Error(
+                'Organizer cannot register as attendee'
+            );
+        }
+
+        event.attendees.push(req.user._id);
+
+        await event.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Successfully registered for event',
+        });
+    }
+);
+
+export const cancelEventRegistration =
+    asyncHandler(async (req, res) => {
+        const event = await Event.findById(req.params.id);
+
+        if (!event) {
+            res.status(404);
+
+            throw new Error('Event not found');
+        }
+
+        const isRegistered = event.attendees.includes(
+            req.user._id
+        );
+
+        if (!isRegistered) {
+            res.status(400);
+
+            throw new Error(
+                'User is not registered for this event'
+            );
+        }
+
+        event.attendees = event.attendees.filter(
+            (attendeeId) =>
+                attendeeId.toString() !==
+                req.user._id.toString()
+        );
+
+        await event.save();
+
+        res.status(200).json({
+            success: true,
+            message: 'Event registration cancelled',
+        });
+    });
